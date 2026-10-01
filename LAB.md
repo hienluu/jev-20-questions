@@ -10,7 +10,7 @@ answers narrow, typed questions with calibrated probabilities, and ordinary code
 
 ```sh
 uv sync
-echo "TYPESAFE_API_KEY=..." > .env         # never commit this; .env is gitignored
+cp .env.example .env                      # add your TYPESAFE_API_KEY; .env is gitignored
 uv run --env-file .env uvicorn app:app --reload --port 8001
 ```
 

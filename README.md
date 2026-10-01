@@ -183,7 +183,7 @@ uv run --env-file .env python examples/ticket_triage.py
 ## Run locally
 
 ```sh
-# TYPESAFE_API_KEY lives in .env
+cp .env.example .env                                     # then add your TYPESAFE_API_KEY
 uv run --env-file .env python -m scripts.build_matrix animals --limit 3   # cheap smoke test
 uv run --env-file .env python -m scripts.build_matrix animals             # 62 × 60 = 3,720 nouls, ~2s
 uv run --env-file .env uvicorn app:app --reload                           # http://localhost:8000
@@ -221,8 +221,54 @@ The server is stateless: the browser sends the full answer history with each req
 
 ## Deploy
 
-**Modal:** `modal secret create typesafe TYPESAFE_API_KEY=...` then `modal deploy modal_app.py`.
+The precomputed table (`twenty_q/data/animals.matrix.json`) is packaged into the image, so rebuild
+it first if you changed any animals or questions.
 
-**Cloud Run:** `gcloud run deploy twenty-questions --source . --set-secrets TYPESAFE_API_KEY=typesafe-key:latest`
+### Modal
 
-Build the matrix before deploying; it is packaged into the image.
+Needs the Modal CLI (`pip install modal`) and a logged-in account (`modal setup`). Run from the
+project root.
+
+1. **Store the API key as a Modal secret** named `typesafe`. `modal_app.py` reads it from there.
+   ```sh
+   modal secret create typesafe --from-dotenv .env
+   ```
+   This uploads every variable set in `.env`, so leave the optional ones in `.env.example` commented out. You can also create
+   the secret in the Modal dashboard under Secrets, with key `TYPESAFE_API_KEY`.
+2. **Try a temporary dev deployment:**
+   ```sh
+   modal serve modal_app.py
+   ```
+   It prints a URL ending in `-dev.modal.run` and reloads on code changes. Play a game, and use the
+   Playground's "Ask Jev one question" to confirm the key works. Ctrl+C stops it.
+3. **Deploy:**
+   ```sh
+   modal deploy modal_app.py
+   ```
+   It prints the permanent URL. Run the same command to redeploy; stop it with
+   `modal app stop twenty-questions-jev`.
+
+The app scales to zero when idle, so the first request after a quiet spell takes a few seconds.
+
+| Error | Fix |
+|---|---|
+| `Secret 'typesafe' not found in environment 'main'` | Run step 1. |
+| `module 'modal_app' has no attribute 'app'` | `modal_app.py` must define its Modal app as `app` (it does in this repo). |
+
+### Cloud Run
+
+Not yet tested. With the API key stored in Secret Manager as `typesafe-key`:
+
+```sh
+gcloud run deploy twenty-questions --source . --set-secrets TYPESAFE_API_KEY=typesafe-key:latest
+```
+
+### Before sharing a public URL
+
+- **Anyone with the URL can make billed Jev calls**, through the Playground and the "What was it?"
+  check. There is no login.
+- **The live-call cap is per connection IP.** Behind Modal's or Cloud Run's proxy, visitors may share
+  one IP, so `LIVE_BUDGET_PER_HOUR` (default 1,000) may apply to everyone combined. To lower it, edit
+  the `typesafe` secret in the Modal dashboard, add `LIVE_BUDGET_PER_HOUR` (e.g. `200`), and redeploy.
+- **Game logs don't persist.** `logs/games.jsonl` is written inside the container and is lost when
+  it scales down.

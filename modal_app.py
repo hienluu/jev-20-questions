@@ -1,7 +1,7 @@
 """Modal deployment: `modal deploy modal_app.py`.
 
 Expects a Modal secret named `typesafe` holding TYPESAFE_API_KEY:
-    modal secret create typesafe TYPESAFE_API_KEY=...
+    modal secret create typesafe --from-dotenv .env
 Build the matrix first so it ships with the image.
 """
 
@@ -15,13 +15,13 @@ image = (
     .add_local_dir("static", "/root/static")
 )
 
-modal_app = modal.App("twenty-questions-jev", image=image)
+app = modal.App("twenty-questions-jev", image=image)  # `modal serve/deploy` looks for `app`
 
 
-@modal_app.function(secrets=[modal.Secret.from_name("typesafe")])
+@app.function(secrets=[modal.Secret.from_name("typesafe")])
 @modal.concurrent(max_inputs=50)
 @modal.asgi_app()
 def web():
-    from app import app
+    from app import app as fastapi_app  # the FastAPI app in app.py
 
-    return app
+    return fastapi_app
