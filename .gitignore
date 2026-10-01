@@ -1,0 +1,21 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Secrets
+.env
+
+# Game logs
+logs/
+
+# Local tooling
+.pytest_cache/
+.hallmark/
+.DS_Store

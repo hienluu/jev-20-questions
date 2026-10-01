@@ -1,0 +1,20 @@
+[project]
+name = "jev-basic"
+version = "0.1.0"
+description = "20 Questions with Jev: a game and hands-on lab for learning TypeSafe's System One model"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.142.2",
+    "typesafe-sdk>=0.7.2",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.1.1",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
