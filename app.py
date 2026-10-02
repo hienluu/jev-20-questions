@@ -8,6 +8,7 @@ server recomputes the posterior from it. Run locally with:
 
 import json
 import os
+import re
 import time
 from collections import defaultdict, deque
 from contextlib import asynccontextmanager
@@ -27,6 +28,10 @@ STATIC_DIR = Path(__file__).parent / "static"
 GAMES_LOG = Path(os.environ.get("GAMES_LOG", "logs/games.jsonl"))
 # Cap on live (billed) Jev requests per client per hour. In-memory, so per server instance.
 LIVE_BUDGET_PER_HOUR = int(os.environ.get("LIVE_BUDGET_PER_HOUR", "1000"))
+# GoatCounter site code (https://<code>.goatcounter.com). Unset means no analytics, e.g. local dev.
+GOATCOUNTER_CODE = os.environ.get("GOATCOUNTER_CODE", "").strip().lower()
+# GoatCounter ignores localhost by default; set to 1 to count local visits while testing.
+GOATCOUNTER_ALLOW_LOCAL = os.environ.get("GOATCOUNTER_ALLOW_LOCAL", "") == "1"
 
 
 @cache
@@ -109,6 +114,13 @@ def _ranking(step: engine.NextStep) -> list[dict]:
 @app.get("/")
 async def index() -> FileResponse:
     return FileResponse(STATIC_DIR / "index.html")
+
+
+@app.get("/api/config")
+async def config() -> dict:
+    """Front-end settings that come from the environment."""
+    valid = bool(re.fullmatch(r"[a-z0-9-]{2,50}", GOATCOUNTER_CODE))
+    return {"goatcounter": GOATCOUNTER_CODE if valid else None, "goatcounter_allow_local": GOATCOUNTER_ALLOW_LOCAL}
 
 
 @app.get("/api/categories")

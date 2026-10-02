@@ -104,3 +104,13 @@ def test_live_budget_caps_billed_calls(client, monkeypatch):
 def test_compare_lists_demos_and_needs_jev(client):
     assert set(client.get("/api/jev/demos").json()) == {"size", "diet", "danger"}
     assert client.post("/api/jev/compare", json={"category": "toy", "candidate": "penguin"}).status_code == 503
+
+
+def test_config_exposes_analytics_code_only_when_valid(client, monkeypatch):
+    assert client.get("/api/config").json()["goatcounter"] is None
+    monkeypatch.setattr(app_module, "GOATCOUNTER_CODE", "jev-20q")
+    assert client.get("/api/config").json() == {"goatcounter": "jev-20q", "goatcounter_allow_local": False}
+    monkeypatch.setattr(app_module, "GOATCOUNTER_ALLOW_LOCAL", True)
+    assert client.get("/api/config").json()["goatcounter_allow_local"] is True
+    monkeypatch.setattr(app_module, "GOATCOUNTER_CODE", "bad code/../x")
+    assert client.get("/api/config").json()["goatcounter"] is None

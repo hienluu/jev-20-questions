@@ -267,6 +267,34 @@ Not yet tested. With the API key stored in Secret Manager as `typesafe-key`:
 gcloud run deploy twenty-questions --source . --set-secrets TYPESAFE_API_KEY=typesafe-key:latest
 ```
 
+### Usage analytics (optional)
+
+The page can report usage to [GoatCounter](https://www.goatcounter.com): free, no cookies, no
+personal data. It's off unless `GOATCOUNTER_CODE` is set, so local development isn't tracked.
+
+1. Sign up at goatcounter.com and pick a site code, e.g. `jev-20q`; your dashboard is
+   `https://jev-20q.goatcounter.com`.
+2. Add `GOATCOUNTER_CODE` (e.g. `jev-20q`) to the `typesafe` secret in the Modal dashboard, then
+   `modal deploy modal_app.py`.
+
+To test locally, GoatCounter ignores `localhost` unless you opt in. Visits then go to your real
+dashboard, so turn it off afterwards:
+
+```sh
+GOATCOUNTER_ALLOW_LOCAL=1 uv run --env-file .env uvicorn app:app --port 8001
+```
+
+The dashboard shows page views and unique visitors, plus these events (each counted with its unique
+visitors):
+
+| Event | When |
+|---|---|
+| `game-start` | A game starts |
+| `game-won` / `game-lost` | The computer guesses it / the player stumps it |
+| `hood-open` | A player opens Under the hood |
+| `playground-view` | Someone opens the Playground |
+| `playground-ask` / `playground-compare` | A live call from the Playground succeeds |
+
 ### Before sharing a public URL
 
 - **Anyone with the URL can make billed Jev calls**, through the Playground and the "What was it?"

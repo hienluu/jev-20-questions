@@ -711,7 +711,28 @@ function renderHood(hood) {
 }
 
 const hoodOpen = () => $("hood").classList.contains("open");
+/* ---------- usage analytics (GoatCounter, cookie-free; off unless GOATCOUNTER_CODE is set) ---------- */
+let analytics = "pending";  // "pending" until /api/config answers, then "on" or "off"
+const pendingEvents = [];
+function track(name, title) {
+  if (analytics === "off") return;
+  const event = { path: name, title: title ?? name, event: true };
+  if (window.goatcounter?.count) window.goatcounter.count(event); else if (pendingEvents.length < 50) pendingEvents.push(event);
+}
+api("/api/config").then(({ goatcounter, goatcounter_allow_local }) => {
+  if (!goatcounter) { analytics = "off"; pendingEvents.length = 0; return; }
+  analytics = "on";
+  const sc = document.createElement("script");
+  sc.async = true;
+  sc.src = "https://gc.zgo.at/count.js";
+  sc.dataset.goatcounter = `https://${goatcounter}.goatcounter.com/count`;
+  if (goatcounter_allow_local) sc.dataset.goatcounterSettings = JSON.stringify({ allow_local: true });
+  sc.onload = () => pendingEvents.splice(0).forEach((event) => window.goatcounter.count(event));
+  document.head.appendChild(sc);
+}).catch(() => { analytics = "off"; });
+
 function setHood(open, remember = true) {
+  if (open && remember && !hoodOpen()) track("hood-open", "Opened Under the hood");
   $("hood").classList.toggle("open", open);
   $("hood").inert = !open;
   document.body.classList.toggle("hood-open", open);
@@ -732,6 +753,7 @@ async function askLive(e) {
       <p class="label">Response</p><pre class="code">${prettyJson(r.response)}</pre>`;
     out.querySelector(".live-answer .muted").textContent = `chance the answer is yes · ${metaLine(r)}`;
     out.appendChild(codeToggle(r.request));
+    track("playground-ask", "Playground: ask one question");
   } catch (err) {
     out.innerHTML = `<p class="error"></p>`;
     out.querySelector("p").textContent = err.message;
@@ -878,6 +900,7 @@ async function comparePrimitives(e) {
     raw.innerHTML = `<summary>Show raw response</summary><pre class="code">${prettyJson(r.response)}</pre>`;
     out.appendChild(raw);
     out.appendChild(codeToggle(r.request));
+    track("playground-compare", "Playground: compare primitives");
   } catch (err) {
     out.innerHTML = `<p class="error"></p>`;
     out.querySelector("p").textContent = err.message;
@@ -949,13 +972,14 @@ function guessResult(correct) {
     $("won-name").textContent = state.guess;
     $("won-detail").textContent = `Guessed in ${state.history.length} question${state.history.length === 1 ? "" : "s"}${state.excluded.length ? ` and ${state.excluded.length + 1} tries` : ""}.`;
     logResult(state.guess, true);
+    track("game-won", "Game: computer guessed it");
     show("won");
     setMood("won");
     burst($("won-name"), 14);
     return;
   }
   state.excluded.push(state.guess);
-  if (state.history.length >= state.max - 1) { setMood("lost"); return show("lost"); }
+  if (state.history.length >= state.max - 1) { setMood("lost"); track("game-lost", "Game: player stumped it"); return show("lost"); }
   advance();
 }
 
@@ -998,10 +1022,11 @@ function start(cat) {
   $("start").hidden = true;
   $("game").hidden = false;
   $("meter").hidden = false;
+  track("game-start", "Game started");
   $("hood-toggle").hidden = false;
   let open = false;
   try { open = localStorage.getItem("hood") === "1"; } catch {}
-  setHood(open);
+  setHood(open, false);
   advance();
 }
 
@@ -1029,7 +1054,9 @@ let categoriesList = [];
 const playgroundCategory = () => state?.category ?? categoriesList[0]?.name ?? "animals";
 
 function route() {
+  const wasPlayground = view === "playground";
   view = location.hash === "#playground" ? "playground" : "game";
+  if (view === "playground" && !wasPlayground) track("playground-view", "Opened the Playground");
   const playing = view === "game";
   $("playground-view").hidden = playing;
   $("start").hidden = !playing || !!state;
