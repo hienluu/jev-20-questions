@@ -21,8 +21,8 @@ function** `p_yes(animal, question) -> float` and the game as a normal program b
 | **Build time** (once, before deploy) | A Noul for every animal × question: 62 × 60 = 3,720 | Once per category, about 2 s, results saved to JSON | `scripts/build_matrix.py`, `twenty_q/jev.py: build_matrix` |
 | **During play** | Nothing. The server reads the saved table | 0 calls per game | `twenty_q/engine.py` |
 | **After a loss, "What was it?"** | Nouls for the questions asked, about the animal the player typed, *only if it isn't in the table* | 0 or 1 request per lost game | `twenty_q/jev.py: answer_row` |
-| **Playground: "Ask Jev one question"** in the Under the hood drawer | One Noul, with any animal and question the developer types | Per click (billed) | `POST /api/jev/noul`, `twenty_q/jev.py: ask_noul` |
-| **Playground: "One decision, three primitives"** | One request mixing Nouls, a Choice and a Score about the same decision | Per click (billed) | `POST /api/jev/compare`, `twenty_q/jev.py: compare_primitives` |
+| **Playground page: "Ask Jev one question"** | One Noul, with any animal and question the developer types | Per click (billed) | `POST /api/jev/noul`, `twenty_q/jev.py: ask_noul` |
+| **Playground page: "One decision, three primitives"** | One request mixing Nouls, a Choice and a Score about the same decision | Per click (billed) | `POST /api/jev/compare`, `twenty_q/jev.py: compare_primitives` |
 
 The expensive, model-backed work happens **offline**. The online path is a dictionary lookup plus
 arithmetic, so a turn takes well under a millisecond and a game costs nothing in API calls.
@@ -158,14 +158,18 @@ scoring documents against a checklist. Swap the candidate list and question bank
 
 ### See it while you play
 
-In the game, press **H** (or the "Under the hood" button) to open a drawer from the right. It has two tabs:
+The app has two views, switched from the top bar: **Game** and **Playground** (`/#playground`).
 
-1. **This turn:** the exact Noul request behind the current question, Jev's P(yes) for the leading
-   animals, and the update table above for your last answer (before, Jev's P(yes), score, after).
-2. **Playground**, a sandbox that doesn't touch your game:
-   - **Ask Jev one question:** any animal + any question, with the raw request and response.
-   - **One decision, three primitives:** one decision ("How big is it?", "What does it eat?", "How dangerous is it?") asked
-   as Nouls, a Choice and a Score in one request, side by side with probabilities and confidence.
+- **Under the hood (in the Game):** press **H**, or the "Under the hood" button, to open a drawer
+  from the right. It shows, live, the exact Noul request behind the current question, Jev's P(yes)
+  for the leading animals, and the update table above for your last answer (before, Jev's P(yes),
+  score, after). **Try this in the Playground →** opens the Playground pre-filled with the current
+  leading animal and question.
+- **Playground:** a sandbox for asking Jev directly, with no game involved:
+  - **Ask Jev one question:** any animal + any question, with the raw request and response.
+  - **One decision, three primitives:** one decision ("How big is it?", "What does it eat?", "How
+    dangerous is it?") asked as Nouls, a Choice and a Score in one request, side by side with
+    probabilities and confidence.
 
 Every live result has **Show code**: a Python SDK snippet and a `curl` command that reproduce it.
 
@@ -191,7 +195,7 @@ uv run pytest
 ```
 
 Gameplay needs no API key once the matrix is built. Live calls (the "what was it?" check for an
-animal not in the list, and the drawer's Playground) are capped at
+animal not in the list, and the Playground) are capped at
 `LIVE_BUDGET_PER_HOUR` Jev requests per client (default 1,000; in memory, per server instance).
 
 ## Evaluate

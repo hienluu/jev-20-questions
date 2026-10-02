@@ -21,7 +21,7 @@ Open http://localhost:8001 and pick **Animals**.
 
 ## 1 · Watch Jev in the game (15 min)
 
-Play a game with **Under the hood** open (press **H**). Stay on the **This turn** tab.
+Play a game with **Under the hood** open (press **H**, or use "Start with Under the hood open").
 
 - Card 1 shows the exact request that produced the numbers behind the current question. Find the
   `state` and the `instructions`. What does Jev see, and what doesn't it see?
@@ -34,7 +34,7 @@ Play a game with **Under the hood** open (press **H**). Stay on the **This turn*
 
 ## 2 · Question design in the Playground (15 min, live)
 
-Open the **Playground** tab. **Ask Jev one question** sends one Noul (any animal, any question) and
+Open the **Playground** from the top bar. **Ask Jev one question** sends one Noul (any animal, any question) and
 shows the raw request and response. Use it to see how Jev reads your wording:
 
 1. Ask something vague about a borderline animal: *"Is it big?"* for **wolf**, **penguin** and

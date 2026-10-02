@@ -73,6 +73,12 @@ h1, h2, p { margin: 0; }
 .wordmark { font: 800 var(--text-lg)/1 var(--font-display); letter-spacing: -0.03em; display: flex; align-items: center; gap: var(--space-2xs); }
 .wordmark .dot { width: 0.7em; height: 0.7em; border-radius: 50%; background: var(--color-accent); box-shadow: 0 2px 0 var(--color-accent-deep); }
 .wordmark .with { font-weight: 500; color: var(--color-ink-2); }
+.views { display: flex; gap: 4px; padding: 4px; border-radius: var(--radius-pill); background: var(--color-paper-3); margin-right: auto; }
+.views a { padding: 0.4rem 0.9rem; border-radius: var(--radius-pill); font-weight: 600; font-size: var(--text-sm); color: var(--color-ink-2); text-decoration: none;
+  transition: background-color 160ms, color 160ms; }
+.views a:hover { color: var(--color-ink); }
+.views a[aria-current="page"] { background: var(--color-card); color: var(--color-ink); box-shadow: 0 1px 2px var(--color-shadow-contact); }
+.views a:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
 .meter { display: flex; align-items: center; gap: var(--space-xs); }
 .pips { display: grid; grid-template-columns: repeat(20, 8px); gap: 4px; }
 .pip { width: 8px; height: 8px; border-radius: 50%; background: var(--color-rule); transition: transform 220ms var(--ease-spring), background-color 160ms; }
@@ -141,10 +147,20 @@ button { font: inherit; color: inherit; }
 
 /* ---------- start screen ---------- */
 .start { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--space-xl); align-items: center; min-height: 70vh; }
-.start h1 { font: 700 var(--text-display)/1.02 var(--font-display); letter-spacing: -0.035em; overflow-wrap: anywhere; min-width: 0; margin: var(--space-sm) 0 var(--space-md); }
+.start h1 { font: 700 clamp(2.25rem, 4.6vw, 3.75rem)/1.05 var(--font-display); letter-spacing: -0.035em; text-wrap: balance; overflow-wrap: anywhere; min-width: 0; margin: var(--space-sm) 0 var(--space-md); }
+.start h1 .line { display: block; }
 .start h1 .hl { background-image: linear-gradient(var(--color-accent) 0 0); background-size: 100% 0.32em; background-position: 0 88%; background-repeat: no-repeat; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .start .lede { font-size: var(--text-lg); color: var(--color-ink-2); max-width: 34ch; }
-.cats { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-lg); }
+.cats { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm) var(--space-md); margin-top: var(--space-lg); }
+.start-meta { display: grid; gap: 2px; font-size: var(--text-sm); }
+.start-meta b { font-size: var(--text-md); }
+.link-btn { border: 0; background: none; padding: 0; cursor: pointer; font: inherit; font-weight: 600; color: var(--color-accent-2-deep);
+  text-decoration: underline; text-decoration-style: dashed; text-underline-offset: 4px; border-radius: 4px; text-align: left; }
+.link-btn:hover { color: var(--color-ink); }
+.link-btn:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+.how { margin-top: var(--space-lg); max-width: 46ch; font-size: var(--text-sm); color: var(--color-ink-2); padding-left: var(--space-sm); border-left: 3px solid var(--color-accent); }
+.how b { color: var(--color-ink); }
+.how kbd { font: 500 var(--text-xs)/1 var(--font-label); padding: 0.15em 0.45em; border-radius: 6px; background: var(--color-paper-3); color: var(--color-ink); }
 .cat { display: flex; align-items: center; gap: var(--space-sm); text-align: left; cursor: pointer; border: 0;
   padding: var(--space-sm) var(--space-md) var(--space-sm) var(--space-sm); border-radius: var(--radius-card);
   background: var(--color-card); box-shadow: 0 1px 2px var(--color-shadow-contact), 0 14px 30px -18px var(--color-shadow-soft);
@@ -224,7 +240,7 @@ ul.contra li { background: var(--color-accent-3-tint); border-radius: var(--radi
 /* under the hood */
 .hood-toggle { display: inline-flex; align-items: center; gap: var(--space-2xs); border: 0; cursor: pointer; font-weight: 600; font-size: var(--text-sm);
   padding: 0.5rem 0.9rem; border-radius: var(--radius-pill); background: var(--color-card); box-shadow: 0 1px 2px var(--color-shadow-contact);
-  transition: background-color 160ms, transform 160ms var(--ease-out); margin-left: auto; }
+  transition: background-color 160ms, transform 160ms var(--ease-out); }
 .hood-toggle:hover { transform: translateY(-1px); background: var(--color-paper-3); }
 .hood-toggle:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
 .hood-toggle[aria-pressed="true"] { background: var(--color-ink); color: var(--color-paper); }
@@ -277,12 +293,6 @@ table.update { width: 100%; border-collapse: collapse; font-size: var(--text-sm)
 .live-answer .p { font: 800 var(--text-2xl)/1 var(--font-display); letter-spacing: -0.03em; }
 @media (max-width: 520px) { .hood { padding-inline: var(--space-sm); } }
 
-.tabs { display: flex; gap: 4px; padding: 4px; margin-bottom: var(--space-sm); background: var(--color-paper-3); border-radius: var(--radius-pill); }
-.tab { flex: 1; border: 0; cursor: pointer; font-weight: 600; font-size: var(--text-sm); padding: 0.5rem 0.6rem; border-radius: var(--radius-pill); background: transparent; white-space: nowrap;
-  transition: background-color 160ms, color 160ms; }
-.tab:hover { background: var(--color-paper-2); }
-.tab[aria-selected="true"] { background: var(--color-card); box-shadow: 0 1px 2px var(--color-shadow-contact); }
-.tab:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 1px; }
 .live select { font: inherit; padding: 0.7rem 0.8rem; border-radius: var(--radius-input); border: 2px solid var(--color-rule); background: var(--color-card); color: var(--color-ink); }
 .live select:focus-visible { outline: none; border-color: var(--color-focus); }
 .prim-block { margin-top: var(--space-md); }
@@ -307,6 +317,19 @@ table.update { width: 100%; border-collapse: collapse; font-size: var(--text-sm)
 .code-tabs button:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
 .code-tabs .copy { margin-left: auto; }
 
+.try-link { margin-top: var(--space-sm); font-size: var(--text-sm); }
+.playground-head { max-width: 62ch; margin-bottom: var(--space-lg); }
+.playground-head h1 { font: 700 clamp(2rem, 4vw, 3rem)/1.05 var(--font-display); letter-spacing: -0.03em; margin: var(--space-2xs) 0 var(--space-sm); }
+.playground-head .lede { color: var(--color-ink-2); }
+.playground-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-md); align-items: start; }
+.playground-col { display: grid; gap: var(--space-md); min-width: 0; }
+/* One column on small screens: question, then primitives, then the reading notes. */
+@media (max-width: 820px) {
+  .playground-grid { grid-template-columns: minmax(0, 1fr); }
+  .playground-col { display: contents; }
+  .step-prim { order: 2; } .step-prim-notes { order: 3; }
+}
+
 /* star-burst celebration */
 .star-burst { position: fixed; width: 26px; height: 26px; pointer-events: none; z-index: 10;
   background: linear-gradient(90deg, transparent 44%, var(--star, var(--color-accent-3)) 44% 56%, transparent 56%),
@@ -328,6 +351,9 @@ table.update { width: 100%; border-collapse: collapse; font-size: var(--text-sm)
   .bubble::before { left: 28px; top: -10px; bottom: auto; }
   .answers .btn kbd { display: none; }
 }
+/* Keyboard hints mean nothing on touch screens. */
+.touch-only { display: none; }
+@media (hover: none) { .btn kbd, .keys-only { display: none; } .touch-only { display: inline; } }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition-duration: 120ms !important; transition-property: opacity, background-color !important; }
   .star-burst { display: none; }
@@ -338,6 +364,10 @@ table.update { width: 100%; border-collapse: collapse; font-size: var(--text-sm)
 <main>
   <header class="topbar">
     <div class="wordmark"><span class="dot" aria-hidden="true"></span>20 Questions <span class="with">with Jev</span></div>
+    <nav class="views" aria-label="Views">
+      <a href="#" data-view="game" aria-current="page">Game</a>
+      <a href="#playground" data-view="playground">Playground</a>
+    </nav>
     <button class="hood-toggle" id="hood-toggle" aria-pressed="false" aria-controls="hood" hidden>
       <span class="gear" aria-hidden="true"></span>Under the hood <kbd>H</kbd>
     </button>
@@ -349,10 +379,12 @@ table.update { width: 100%; border-collapse: collapse; font-size: var(--text-sm)
 
   <section class="start" id="start">
     <div>
-      <p class="label">A guessing game</p>
-      <h1>Think of an animal. <span class="hl">I'll guess it.</span></h1>
+      <p class="label">Powered by Jev · TypeSafe AI</p>
+      <h1><span class="line">Think of an animal.</span> <span class="line"><span class="hl">I'll guess it.</span></span></h1>
       <p class="lede">Keep it secret. Answer a few yes-or-no questions and watch my hunches shuffle around until one wins.</p>
       <div class="cats" id="cats"></div>
+      <p class="how"><b>How it works:</b> Jev answers small yes/no facts as probabilities, and plain code does the guessing. <span class="keys-only">Press <kbd>H</kbd> during a game to watch it happen.</span><span class="touch-only">Tap "Under the hood" during a game to watch it happen.</span>
+        Or skip the game and <a class="link-btn" href="#playground">try Jev in the Playground</a>.</p>
       <p class="error" id="start-error" hidden></p>
     </div>
     <div class="stage-art" aria-hidden="true">
@@ -457,11 +489,7 @@ table.update { width: 100%; border-collapse: collapse; font-size: var(--text-sm)
     <div class="hood-head">
       <p class="muted">Jev never plays the game. It answers small yes/no facts with a probability, and plain code does the rest: a Bayes update after each answer, and picking the question that splits the odds best.</p>
     </div>
-    <div class="tabs" role="tablist" aria-label="Under the hood sections">
-      <button role="tab" class="tab" id="tab-turn" data-tab="turn" aria-selected="true" aria-controls="pane-turn">This turn</button>
-      <button role="tab" class="tab" id="tab-playground" data-tab="playground" aria-selected="false" aria-controls="pane-playground" tabindex="-1">Playground</button>
-    </div>
-    <div class="hood-grid" id="pane-turn" role="tabpanel" aria-labelledby="tab-turn">
+    <div class="hood-grid" id="pane-turn">
       <article class="hood-card step-1">
         <p class="label">1 · Before anyone plays</p>
         <h3>Jev already answered this question</h3>
@@ -469,6 +497,7 @@ table.update { width: 100%; border-collapse: collapse; font-size: var(--text-sm)
         <pre class="code" id="hood-request"></pre>
         <p class="muted small">Jev's answers for the current leaders (P yes):</p>
         <div class="noul-list" id="hood-nouls"></div>
+        <button class="link-btn try-link" id="hood-try" type="button">Try this in the Playground →</button>
       </article>
       <article class="hood-card step-2">
         <p class="label">2 · Your last answer</p>
@@ -480,40 +509,52 @@ table.update { width: 100%; border-collapse: collapse; font-size: var(--text-sm)
         </table>
       </article>
     </div>
-    <div class="hood-grid" id="pane-playground" role="tabpanel" aria-labelledby="tab-playground" hidden>
-      <article class="hood-card step-3">
-        <p class="label">One fact</p>
-        <h3>Ask Jev one question</h3>
-        <p class="muted small">Same call shape as the build script, sent live to the TypeSafe API. Try an animal that isn't in the game.</p>
-        <form class="live" id="live-form">
-          <label>Animal <input type="text" id="live-animal" maxlength="60" required></label>
-          <label>Question <input type="text" id="live-question" maxlength="160" required></label>
-          <button class="btn btn--cyan" type="submit" id="live-send">Ask Jev</button>
-        </form>
-        <div id="live-result" aria-live="polite"></div>
-      </article>
-      <article class="hood-card step-prim">
-        <p class="label">Noul · Choice · Score</p>
-        <h3>One decision, three primitives</h3>
-        <p class="muted small">The same question asked three ways, in a single request. Compare what each kind of answer gives your code.</p>
-        <form class="live" id="prim-form">
-          <label>Animal <input type="text" id="prim-animal" maxlength="60" required></label>
-          <label>Decision <select id="prim-demo"></select></label>
-          <button class="btn btn--cyan" type="submit" id="prim-send">Ask all three ways</button>
-        </form>
-        <div id="prim-result" aria-live="polite"></div>
-      </article>
-      <article class="hood-card step-prim-notes">
-        <p class="label">How to read them</p>
-        <dl class="prim-notes">
-          <dt>Noul</dt><dd>One independent P(yes) per statement. They don't have to add up; your code combines them. Best for facts you'll weigh yourself, like this game does.</dd>
-          <dt>Choice</dt><dd>Picks one option. Probabilities across options sum to 1, and you get a <b>confidence</b>. Best for routing and classification.</dd>
-          <dt>Score</dt><dd>Rates on ordered levels. The score is a probability-weighted average, so it can fall between levels (1.8 = mostly level 2). Also has a confidence.</dd>
-          <dt>Probability vs confidence</dt><dd>Probability says <i>which</i> answer. Confidence is computed from how peaked the spread is: a flat spread means "I'm not sure", so your code can act, double-check, or hand off.</dd>
-        </dl>
-      </article>
-    </div>
   </aside>
+
+  <section class="playground" id="playground-view" hidden aria-labelledby="playground-title">
+    <div class="playground-head">
+      <p class="label">Playground</p>
+      <h1 id="playground-title">Ask Jev directly</h1>
+      <p class="lede">No game here: just you and the model. Send one yes/no question, or ask the same decision three ways and compare the primitives. Every result shows the raw request and response, and the code to reproduce it.</p>
+    </div>
+    <div class="playground-grid">
+      <div class="playground-col">
+        <article class="hood-card step-3">
+          <p class="label">One fact</p>
+          <h3>Ask Jev one question</h3>
+          <p class="muted small">One Noul, sent live to the TypeSafe API: the same call shape the game used to build its table. Try an animal that isn't in the game.</p>
+          <form class="live" id="live-form">
+            <label>Animal <input type="text" id="live-animal" maxlength="60" required></label>
+            <label>Question <input type="text" id="live-question" maxlength="160" required></label>
+            <button class="btn btn--cyan" type="submit" id="live-send">Ask Jev</button>
+          </form>
+          <div id="live-result" aria-live="polite"></div>
+      </article>
+        <article class="hood-card step-prim-notes">
+          <p class="label">How to read them</p>
+          <dl class="prim-notes">
+            <dt>Noul</dt><dd>One independent P(yes) per statement. They don't have to add up; your code combines them. Best for facts you'll weigh yourself, like this game does.</dd>
+            <dt>Choice</dt><dd>Picks one option. Probabilities across options sum to 1, and you get a <b>confidence</b>. Best for routing and classification.</dd>
+            <dt>Score</dt><dd>Rates on ordered levels. The score is a probability-weighted average, so it can fall between levels (1.8 = mostly level 2). Also has a confidence.</dd>
+            <dt>Probability vs confidence</dt><dd>Probability says <i>which</i> answer. Confidence is computed from how peaked the spread is: a flat spread means "I'm not sure", so your code can act, double-check, or hand off.</dd>
+          </dl>
+      </article>
+      </div>
+      <div class="playground-col">
+        <article class="hood-card step-prim">
+          <p class="label">Noul · Choice · Score</p>
+          <h3>One decision, three primitives</h3>
+          <p class="muted small">The same question asked three ways, in a single request. Compare what each kind of answer gives your code.</p>
+          <form class="live" id="prim-form">
+            <label>Animal <input type="text" id="prim-animal" maxlength="60" required></label>
+            <label>Decision <select id="prim-demo"></select></label>
+            <button class="btn btn--cyan" type="submit" id="prim-send">Ask all three ways</button>
+          </form>
+          <div id="prim-result" aria-live="polite"></div>
+      </article>
+      </div>
+    </div>
+  </section>
 
   <div class="history" id="history"></div>
 </main>
@@ -625,6 +666,7 @@ function prettyJson(obj) {
     .replace(/(: )(\d+\.?\d*)/g, '$1<span class="n">$2</span>');
 }
 
+let lastHood = null;  // the latest "This turn" data, for "Try this in the Playground"
 function renderHood(hood) {
   if (hood.next) {
     $("hood-leader").textContent = hood.next.request.state;
@@ -639,7 +681,6 @@ function renderHood(hood) {
       row.querySelector(".pct").textContent = n.p_yes.toFixed(2);
       $("hood-nouls").appendChild(row);
     }
-    if (!$("live-question").matches(":focus")) $("live-question").value = hood.next.question;
   }
   const body = $("hood-update").querySelector("tbody");
   body.innerHTML = "";
@@ -655,8 +696,7 @@ function renderHood(hood) {
   } else {
     $("hood-last-title").textContent = "Answer a question to see the update";
   }
-  if (!$("live-animal").value) $("live-animal").value = "moose";
-  if (hood.next && !$("prim-animal").dataset.touched) $("prim-animal").value = hood.next.request.state;
+  lastHood = hood;
 }
 
 const hoodOpen = () => $("hood").classList.contains("open");
@@ -674,7 +714,7 @@ async function askLive(e) {
   out.innerHTML = `<p class="muted small" style="margin-top: var(--space-sm)">Asking Jev…</p>`;
   $("live-send").disabled = true;
   try {
-    const r = await api("/api/jev/noul", { category: state.category, candidate: $("live-animal").value, question: $("live-question").value });
+    const r = await api("/api/jev/noul", { category: playgroundCategory(), candidate: $("live-animal").value, question: $("live-question").value });
     const p = Object.values(r.response.answers)[0].noul;
     out.innerHTML = `<div class="live-answer"><span class="p">${p.toFixed(2)}</span><span class="muted small"></span></div>
       <p class="label" style="margin-top: var(--space-sm)">Request</p><pre class="code">${prettyJson(r.request)}</pre>
@@ -764,16 +804,6 @@ function barRow(name, value, label, picked = false) {
   return row;
 }
 
-/* ---------- drawer tabs ---------- */
-function setTab(name) {
-  document.querySelectorAll(".tab").forEach((t) => {
-    const on = t.dataset.tab === name;
-    t.setAttribute("aria-selected", String(on));
-    t.tabIndex = on ? 0 : -1;
-    $(`pane-${t.dataset.tab}`).hidden = !on;
-  });
-}
-
 /* ---------- one decision, three primitives ---------- */
 let demos = null;
 async function loadDemos() {
@@ -794,7 +824,7 @@ async function comparePrimitives(e) {
   $("prim-send").disabled = true;
   try {
     const demo = $("prim-demo").value;
-    const r = await api("/api/jev/compare", { category: state.category, candidate: $("prim-animal").value, demo });
+    const r = await api("/api/jev/compare", { category: playgroundCategory(), candidate: $("prim-animal").value, demo });
     const a = r.response.answers, q = r.request.questions;
     const strip = (t) => t.replace(/^About the animal named in the state: /, "");
     out.innerHTML = "";
@@ -972,9 +1002,6 @@ function restart() {
   $("meter").hidden = true;
   $("hood-toggle").hidden = true;
   setHood(false, false);
-  $("live-result").innerHTML = "";
-  $("prim-result").innerHTML = "";
-  delete $("prim-animal").dataset.touched;
   $("history").innerHTML = "";
   $("counter").textContent = "";
 }
@@ -986,20 +1013,51 @@ $("guess-no").onclick = () => guessResult(false);
 $("reveal-form").onsubmit = reveal;
 $("live-form").onsubmit = askLive;
 $("prim-form").onsubmit = comparePrimitives;
-$("prim-animal").addEventListener("input", () => ($("prim-animal").dataset.touched = "1"));
-document.querySelectorAll(".tab").forEach((t) => {
-  t.onclick = () => { setTab(t.dataset.tab); if (t.dataset.tab === "playground") loadDemos().catch(fail); };
-  t.onkeydown = (e) => {
-    const tabs = [...document.querySelectorAll(".tab")];
-    const i = tabs.indexOf(t) + (e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0);
-    if (i !== tabs.indexOf(t)) { const n = tabs[(i + tabs.length) % tabs.length]; n.focus(); n.click(); }
-  };
-});
+/* ---------- views: Game and Playground, routed by the URL hash ---------- */
+let view = "game";
+let categoriesList = [];
+const playgroundCategory = () => state?.category ?? categoriesList[0]?.name ?? "animals";
+
+function route() {
+  view = location.hash === "#playground" ? "playground" : "game";
+  const playing = view === "game";
+  $("playground-view").hidden = playing;
+  $("start").hidden = !playing || !!state;
+  $("game").hidden = !playing || !state;
+  $("history").hidden = !playing;
+  $("meter").hidden = !playing || !state;
+  $("hood-toggle").hidden = !playing || !state;
+  if (!playing) {
+    setHood(false, false);
+    if (!$("live-animal").value) $("live-animal").value = "moose";
+    if (!$("live-question").value) $("live-question").value = "Does it have antlers?";
+    if (!$("prim-animal").value) $("prim-animal").value = "penguin";
+    loadDemos().catch((err) => { $("prim-result").textContent = err.message; });
+  }
+  document.querySelectorAll(".views a").forEach((a) => {
+    if (a.dataset.view === view) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+  });
+  window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", route);
+
+$("hood-try").onclick = () => {
+  const next = lastHood?.next;
+  if (next) {
+    $("live-animal").value = next.request.state;
+    $("live-question").value = next.question;
+    $("prim-animal").value = next.request.state;
+  }
+  location.hash = "#playground";
+};
+
 $("hood-toggle").onclick = () => setHood(!hoodOpen());
 $("hood-close").onclick = () => setHood(false);
 
 document.addEventListener("keydown", (e) => {
   const k = e.key.toLowerCase();
+  if (view !== "game") return;
+  if (!state && k === "enter" && defaultCategory && !$("start").hidden && e.target === document.body) return start(defaultCategory);
   if (k === "escape" && hoodOpen()) return setHood(false);
   // Game shortcuts stay out of the way while typing or working in the drawer.
   if (["INPUT", "SELECT", "TEXTAREA"].includes(e.target.tagName) || e.target.closest?.("#hood") || e.metaKey || e.ctrlKey) {
@@ -1011,10 +1069,23 @@ document.addEventListener("keydown", (e) => {
   else if (state?.phase === "guessing" && (k === "y" || k === "n")) guessResult(k === "y");
 });
 
+let defaultCategory = null;  // set when there's a single category, so Enter can start it
+
 api("/api/categories").then((cats) => {
+  categoriesList = cats;
   if (!cats.length) {
     $("start-error").textContent = "No categories have a matrix yet. Run: uv run python -m scripts.build_matrix animals";
     $("start-error").hidden = false;
+  }
+  if (cats.length === 1) {
+    const [cat] = cats;
+    defaultCategory = cat;
+    $("cats").innerHTML = `<button class="btn btn--lg" id="start-btn">Start guessing <kbd>Enter</kbd></button>
+      <div class="start-meta"><b></b><button class="link-btn" id="start-hood" type="button">Start with Under the hood open</button></div>`;
+    $("cats").querySelector(".start-meta b").textContent = `${cat.size} ${cat.title.toLowerCase()} to choose from`;
+    $("start-btn").onclick = () => start(cat);
+    $("start-hood").onclick = () => { start(cat); setHood(true); };
+    return;
   }
   for (const cat of cats) {
     const b = document.createElement("button");
@@ -1027,6 +1098,7 @@ api("/api/categories").then((cats) => {
     $("cats").appendChild(b);
   }
 }).catch((err) => { $("start-error").textContent = err.message; $("start-error").hidden = false; });
+route();
 </script>
 </body>
 </html>
