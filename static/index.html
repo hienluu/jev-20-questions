@@ -44,7 +44,9 @@
   --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem; --space-2xl: 4.5rem;
 
   --text-xs: 0.75rem; --text-sm: 0.875rem; --text-md: 1.0625rem; --text-lg: 1.25rem;
-  --text-xl: 1.625rem; --text-2xl: clamp(1.75rem, 3.4vw, 2.5rem); --text-display: clamp(2.5rem, 6vw, 4.5rem);
+  --text-xl: 1.625rem;
+  --text-landing-h1: clamp(2.25rem, 1.6rem + 2.4vw, 3.25rem);
+  --text-landing-lede: clamp(1.0625rem, 0.95rem + 0.4vw, 1.25rem); --text-2xl: clamp(1.75rem, 3.4vw, 2.5rem); --text-display: clamp(2.5rem, 6vw, 4.5rem);
 
   --radius-card: 24px; --radius-pill: 999px; --radius-input: 14px;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -92,7 +94,7 @@ h1, h2, p { margin: 0; }
   background: var(--color-accent); border-radius: 50% 50% 46% 46% / 58% 58% 42% 42%;
   box-shadow: 0 6px 0 0 var(--color-accent-deep), 0 14px 24px -8px var(--color-accent-cast);
   animation: breathe 3.2s var(--ease-in-out) infinite; transform-origin: 50% 100%; }
-.jev--big { --size: clamp(150px, 22vw, 230px); }
+.jev--big { --size: clamp(132px, 13vw, 184px); }
 .jev .eyes { position: absolute; top: 30%; left: 0; right: 0; display: flex; justify-content: center; gap: 16%; }
 .jev .eye { width: 22%; aspect-ratio: 1 / 1.15; background: var(--color-eye); border-radius: 50%; position: relative; overflow: hidden;
   animation: blink 5s infinite; transition: transform 220ms var(--ease-out); }
@@ -146,19 +148,20 @@ button { font: inherit; color: inherit; }
 .btn--cyan kbd { background: oklch(99% 0.006 95 / 0.22); }
 
 /* ---------- start screen ---------- */
-.start { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--space-xl); align-items: center; min-height: 70vh; }
-.start h1 { font: 700 clamp(2.25rem, 4.6vw, 3.75rem)/1.05 var(--font-display); letter-spacing: -0.035em; text-wrap: balance; overflow-wrap: anywhere; min-width: 0; margin: var(--space-sm) 0 var(--space-md); }
+.start { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: var(--space-xl); align-items: center; padding-block: clamp(1.5rem, 5vh, 3.5rem) var(--space-xl); }
+.start h1 { font: 700 var(--text-landing-h1)/1.06 var(--font-display); letter-spacing: -0.03em; text-wrap: balance; overflow-wrap: anywhere; min-width: 0; margin: var(--space-xs) 0 var(--space-sm); }
 .start h1 .line { display: block; }
 .start h1 .hl { background-image: linear-gradient(var(--color-accent) 0 0); background-size: 100% 0.32em; background-position: 0 88%; background-repeat: no-repeat; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-.start .lede { font-size: var(--text-lg); color: var(--color-ink-2); max-width: 34ch; }
+.start .lede { font-size: var(--text-landing-lede); line-height: 1.45; color: var(--color-ink-2); max-width: 36ch; }
 .cats { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm) var(--space-md); margin-top: var(--space-lg); }
-.start-meta { display: grid; gap: 2px; font-size: var(--text-sm); }
-.start-meta b { font-size: var(--text-md); }
+.start-meta { display: grid; gap: 2px; font-size: var(--text-md); line-height: 1.35; }
+.start-meta b { font-weight: 600; }
+#start-btn { font-size: var(--text-md); padding: 0.95rem 1.6rem; }
 .link-btn { border: 0; background: none; padding: 0; cursor: pointer; font: inherit; font-weight: 600; color: var(--color-accent-2-deep);
   text-decoration: underline; text-decoration-style: dashed; text-underline-offset: 4px; border-radius: 4px; text-align: left; }
 .link-btn:hover { color: var(--color-ink); }
 .link-btn:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
-.how { margin-top: var(--space-lg); max-width: 46ch; font-size: var(--text-sm); color: var(--color-ink-2); padding-left: var(--space-sm); border-left: 3px solid var(--color-accent); }
+.how { margin-top: var(--space-lg); max-width: 50ch; font-size: var(--text-sm); line-height: 1.55; color: var(--color-ink-2); padding-left: var(--space-sm); border-left: 3px solid var(--color-accent); }
 .how b { color: var(--color-ink); }
 .how kbd { font: 500 var(--text-xs)/1 var(--font-label); padding: 0.15em 0.45em; border-radius: 6px; background: var(--color-paper-3); color: var(--color-ink); }
 .cat { display: flex; align-items: center; gap: var(--space-sm); text-align: left; cursor: pointer; border: 0;
@@ -173,8 +176,8 @@ button { font: inherit; color: inherit; }
 .cat b { display: block; font-size: var(--text-lg); letter-spacing: -0.01em; }
 .cat .go { margin-left: var(--space-xs); font-weight: 700; color: var(--color-accent-2-deep); transition: transform 160ms var(--ease-out); }
 .cat:hover .go { transform: translateX(3px); }
-.stage-art { position: relative; display: grid; place-items: center; min-height: 320px; }
-.stage-art .ring { position: absolute; width: min(100%, 360px); aspect-ratio: 1; border-radius: 50%; border: 2px dashed var(--color-rule); }
+.stage-art { position: relative; display: grid; place-items: center; min-height: 280px; }
+.stage-art .ring { position: absolute; width: min(100%, 290px); aspect-ratio: 1; border-radius: 50%; border: 2px dashed var(--color-rule); }
 .stage-art .note { position: absolute; font: 500 var(--text-sm)/1.3 var(--font-label); background: var(--color-card); padding: var(--space-2xs) var(--space-xs);
   border-radius: var(--radius-input); box-shadow: 0 10px 24px -14px var(--color-shadow-soft); }
 .stage-art .note.a { top: 8%; right: 4%; rotate: 5deg; }
@@ -189,12 +192,17 @@ button { font: inherit; color: inherit; }
 .question { font: 700 var(--text-2xl)/1.15 var(--font-display); letter-spacing: -0.025em; margin-top: var(--space-2xs); min-height: 2.3em; overflow-wrap: anywhere;
   animation: pop-in 320ms var(--ease-snap); }
 @keyframes pop-in { from { opacity: 0; transform: translateY(6px); } }
-.answers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-sm); }
-.answers .btn { width: 100%; }
-.why { margin-top: var(--space-md); font-size: var(--text-sm); }
-.why summary { cursor: pointer; color: var(--color-accent-2-deep); font-weight: 600; width: fit-content; border-radius: 6px; }
-.why summary:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
-.why p { margin-top: var(--space-2xs); color: var(--color-ink-2); max-width: 52ch; }
+/* Content-sized answers in one row: Yes / No lead, the two hedges sit quieter beside them. */
+.answers { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs); }
+.answers .btn { min-width: 6.5rem; }
+.answers .btn--soft { min-width: 0; padding: 0.6rem 1rem; font-size: var(--text-sm); }
+.answers .gap { width: var(--space-xs); }
+@media (max-width: 520px) {
+  /* Phones: back to a full-width 2×2 grid for easy tapping. */
+  .answers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .answers .btn { width: 100%; min-width: 0; }
+  .answers .gap { display: none; }
+}
 
 .reveal-card { position: relative; background: var(--color-card); border-radius: var(--radius-card); padding: var(--space-md) var(--space-lg); rotate: -1deg; max-width: 34rem;
   box-shadow: 0 6px 0 0 var(--color-accent-deep), 0 24px 50px -24px var(--color-accent-cast); }
@@ -212,7 +220,8 @@ ul.contra li { background: var(--color-accent-3-tint); border-radius: var(--radi
 
 /* hunch board */
 .board { background: var(--color-paper-2); border-radius: var(--radius-card); padding: var(--space-md); position: sticky; top: var(--space-md); }
-.board h2 { font: 700 var(--text-lg)/1.2 var(--font-display); letter-spacing: -0.015em; margin: var(--space-2xs) 0 var(--space-md); }
+.board h2 { font: 700 var(--text-lg)/1.2 var(--font-display); letter-spacing: -0.015em; margin: var(--space-2xs) 0 2px; }
+.board-sub { font-size: var(--text-sm); color: var(--color-ink-2); margin-bottom: var(--space-md); }
 .bars { position: relative; }
 .row { position: absolute; left: 0; right: 0; height: 40px; display: grid; grid-template-columns: minmax(0, 7.5rem) minmax(0, 1fr) 3rem; align-items: center; gap: var(--space-xs);
   transition: transform 520ms var(--ease-spring), opacity 300ms; }
@@ -343,7 +352,8 @@ table.update { width: 100%; border-collapse: collapse; font-size: var(--text-sm)
 @media (max-width: 820px) {
   .start, .game { grid-template-columns: minmax(0, 1fr); }
   .start { min-height: 0; gap: var(--space-md); }
-  .stage-art { min-height: 240px; order: -1; }
+  .stage-art { min-height: 220px; order: -1; }
+  .stage-art .ring { width: min(100%, 230px); }
   .board { position: static; }
 }
 @media (max-width: 420px) {
@@ -413,12 +423,12 @@ table.update { width: 100%; border-collapse: collapse; font-size: var(--text-sm)
           </div>
         </div>
         <div class="answers">
-          <button class="btn btn--lg" data-answer="yes">Yes <kbd>Y</kbd></button>
-          <button class="btn btn--lg btn--cyan" data-answer="no">No <kbd>N</kbd></button>
+          <button class="btn" data-answer="yes">Yes <kbd>Y</kbd></button>
+          <button class="btn btn--cyan" data-answer="no">No <kbd>N</kbd></button>
+          <span class="gap" aria-hidden="true"></span>
           <button class="btn btn--soft" data-answer="sort_of">Sort of <kbd>S</kbd></button>
           <button class="btn btn--soft" data-answer="unknown">No idea <kbd>?</kbd></button>
         </div>
-        <details class="why"><summary>Why ask that?</summary><p id="why"></p></details>
       </div>
       <!-- guessing -->
       <div id="guessing" hidden>
@@ -473,6 +483,7 @@ table.update { width: 100%; border-collapse: collapse; font-size: var(--text-sm)
     <aside class="board">
       <p class="label">Live odds</p>
       <h2>My hunches</h2>
+      <p class="board-sub">Chance it's each animal, based on your answers</p>
       <div class="bars" id="bars"></div>
       <div class="rest" id="rest"></div>
     </aside>
@@ -487,7 +498,7 @@ table.update { width: 100%; border-collapse: collapse; font-size: var(--text-sm)
       <button class="hood-close" id="hood-close" aria-label="Close under the hood">×</button>
     </div>
     <div class="hood-head">
-      <p class="muted">Jev never plays the game. It answers small yes/no facts with a probability, and plain code does the rest: a Bayes update after each answer, and picking the question that splits the odds best.</p>
+      <p class="muted">Jev is the AI model that knows the facts. Before you started, it answered every question about every animal with a probability, like "Can a penguin fly?" → 0.04. During the game, ordinary code uses those numbers to choose each question and to update the odds after you answer. The two cards below show both steps for this turn.</p>
     </div>
     <div class="hood-grid" id="pane-turn">
       <article class="hood-card step-1">
@@ -909,7 +920,6 @@ async function advance() {
     const q = $("question");
     q.textContent = step.question.text;
     q.style.animation = "none"; q.offsetWidth; q.style.animation = ""; // replay the pop-in
-    $("why").textContent = `Of everything I could ask, this one should tell me the most: about ${step.gain_bits.toFixed(2)} bits, where 1 bit would split my remaining guesses perfectly in half.`;
     show("asking");
     setMood(step.ranking[0].probability > 0.3 ? "hmm" : "asking");
   } catch (err) { fail(err); } finally { setBusy(false); }
@@ -1080,7 +1090,7 @@ api("/api/categories").then((cats) => {
   if (cats.length === 1) {
     const [cat] = cats;
     defaultCategory = cat;
-    $("cats").innerHTML = `<button class="btn btn--lg" id="start-btn">Start guessing <kbd>Enter</kbd></button>
+    $("cats").innerHTML = `<button class="btn" id="start-btn">Start guessing <kbd>Enter</kbd></button>
       <div class="start-meta"><b></b><button class="link-btn" id="start-hood" type="button">Start with Under the hood open</button></div>`;
     $("cats").querySelector(".start-meta b").textContent = `${cat.size} ${cat.title.toLowerCase()} to choose from`;
     $("start-btn").onclick = () => start(cat);
